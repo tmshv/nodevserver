@@ -4,7 +4,7 @@ var dropbox = require("./dropbox").dropbox;
 var spbscrt = require("./spbscrt.js").spbscrt;
 
 var FRESH = false;//true;
-var DEFAULT_PORT = 8080;
+var DEFAULT_PORT = 1337;
 var rootPublic = __dirname + '/www';
 var rootTemplates = __dirname + '/templates';
 var templateFiles = {
