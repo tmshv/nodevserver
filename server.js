@@ -1,33 +1,25 @@
+var express = require('express');
+//var hogan = require('hogan.js');
 var dropbox = require("./dropbox").dropbox;
 var spbscrt = require("./spbscrt.js").spbscrt;
 
 var FRESH = false;//true;
-
-dropbox.establish(FRESH, function (success) {
-    if (success) {
-        console.log('connection to dropbox established');
-        startListening();
-//        dropbox.client.put('/Public/lol', "lol", function(status, reply){
-//            console.log(reply);
-//        });
-//        dropbox.client.get('/spbscrt/Workspace/assets/scenes/test-scene-b.swf', function(status, reply){
-//            console.log(reply.toString());
-//        });
-    } else {
-        console.log('cannot connect to dropbox');
-    }
-});
-
-var express = require('express');
-//var hogan = require('hogan.js');
-
-var DEFAULT_PORT = 8080;//1337;
+var DEFAULT_PORT = 8080;
 var rootPublic = __dirname + '/www';
 var rootTemplates = __dirname + '/templates';
 var templateFiles = {
     login:'login.html',
     hello:'hello.html'
 };
+
+dropbox.establish(FRESH, function (success) {
+    if (success) {
+        console.log('connection to dropbox established');
+        startListening();
+    } else {
+        console.log('cannot connect to dropbox');
+    }
+});
 
 var app = express.createServer();
 app.use(express.bodyParser());
