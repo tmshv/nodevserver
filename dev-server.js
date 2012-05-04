@@ -1,41 +1,54 @@
-var spbscrt = require('./spbscrt.js').spbscrt;
-var fileserver = require('./fileserver.js').fileserver;
-var dropbox = require('./dropbox.js').dropbox;
-var fs = require('fs');
+var express = require("express");
+var fs = require("fs");
+var spbscrt = require("./spbscrt.js").spbscrt;
 
-fs.readFile('lastpid', 'utf-8', function (err, data) {
-    if (err) {
-        start();
-    } else {
-        var last_pid = parseInt(data);
-        if (last_pid) {
-            console.log('last pid ', last_pid);
-            try {
-                process.kill(last_pid, 'SIGHUP');
-                console.log('killed');
-            } catch (error) {
+var FRESH = false;//true;
+var DEFAULT_PORT = 8080;
+var rootPublic = __dirname + '/www';
 
-            }
+var app = express.createServer();
+app.use(express.bodyParser());
+app.use(express.cookieParser());
+app.use(express.static(rootPublic));
+
+app.post('/save', function (req, res) {
+    var screen = req.body.screen;
+    var doc = req.body.document;
+    spbscrt.save(screen, doc, function (result) {
+        res.send(result);
+    });
+});
+app.get('/save/:screen/:doc', function (req, res) {
+    var screen = req.param('screen', 'lol');
+    var doc = req.param('doc', '123lll');
+    spbscrt.save(screen, doc, function (result) {
+        res.send(result);
+    });
+});
+app.get('/get/:screen', function (req, res) {
+    var screen = req.param('screen');
+    spbscrt.get(screen, function (result) {
+        res.send(result);
+    });
+});
+app.get("*", function (req, res) {
+    var reqpath = req.params[0];
+    var filepath = '/Users/tmshv/Dropbox/Secrets of Saint Petersburg/Workspace/assets' + reqpath;
+    console.log('obtaining file ' + filepath);
+    fs.readFile(filepath, function(error, data){
+        if(error) {
+            res.send('404');
+        }else{
+            res.send(data);
         }
-        start();
-    }
+    });
 });
 
-function start() {
-    fs.writeFile('lastpid', process.pid.toString(), function (err) {
-        console.log('pid ', process.pid);
-    });
-    launch();
+function startListening() {
+    app.listen(DEFAULT_PORT);
+    console.log("http://host:port".
+        replace("host", "localhost").
+        replace("port", DEFAULT_PORT)
+    );
 }
-
-function launch() {
-    dropbox.establish(function () {
-        spbscrt.start();
-        fileserver.start({
-            exist:function (uri, callback) {
-                console.log('establishing existence of file ' + uri);
-                dropbox.getFile(uri, callback);
-            }
-        });
-    });
-}
+startListening();
