@@ -1,4 +1,5 @@
 var dropbox = require("./dropbox").dropbox;
+var express = require("express");
 
 var FRESH = false;//true;
 var DEFAULT_PORT = 1337;
