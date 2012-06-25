@@ -4,7 +4,7 @@ var fs = require('fs');
 var drbox = dbox.app({
     'root': "dropbox",
     'app_key': 'hsekg8dhwh9qo2o', //'7bwdoaznafgbygh',
-    'app_secret':'enstw52f9k45ha5', //'n36hf7775oj9i46'
+    'app_secret':'enstw52f9k45ha5' //'n36hf7775oj9i46'
 });
 
 

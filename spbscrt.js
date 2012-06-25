@@ -11,6 +11,10 @@ var spbscrt = {
         });
     },
 
+    saveScreenSettings: function(screen, settings, callback){
+
+    },
+
     get: function(screen, callback){
         database.collection('screens').find({screen: screen}).toArray(function(err, result) {
             if (err) throw err;
