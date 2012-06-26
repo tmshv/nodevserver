@@ -20,7 +20,7 @@ app.post('/save', function (req, res) {
     var json = JSON.parse(doc);
 
     fs.writeFile(ROOT_URL + "/logic/" + screen + ".json", JSON.stringify(json, null, 4), function (err) {
-        console.log("saved");
+        console.log("screen logic saved".replace("screen", screen));
         res.send("okay");
     });
 });
@@ -30,7 +30,7 @@ app.post('/savescreensettings', function (req, res) {
     var json = JSON.parse(doc);
 
     fs.writeFile(ROOT_URL + "/screens/" + screen + ".json", JSON.stringify(json, null, 4), function (err) {
-        console.log("saved");
+        console.log("screen settings saved".replace("screen", screen));
         res.send("okay");
     });
 });
