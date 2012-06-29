@@ -5,7 +5,7 @@ var FRESH = false;//true;
 var DEFAULT_PORT = 1337;
 var rootPublic = __dirname + '/www';
 var rootTemplates = __dirname + '/templates';
-var ROOT_URL = "/SPBSCRT";
+var ROOT = "/SPBSCRT";
 var GENERATED_PATH = ROOT + "/dyn";
 
 dropbox.establish(FRESH, function (success) {
