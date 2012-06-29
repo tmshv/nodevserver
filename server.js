@@ -49,7 +49,7 @@ app.post('/saveParams', function (req, res) {
 });
 app.get("*", function (req, res) {
     var reqpath = req.params[0];
-    var filepath = ROOT_URL + reqpath;
+    var filepath = ROOT + reqpath;
     console.log('obtaining dropbox file ' + filepath);
     dropbox.client.get(filepath, function (status, reply) {
         res.send(reply);
