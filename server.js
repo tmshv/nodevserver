@@ -5,7 +5,8 @@ var FRESH = false;//true;
 var DEFAULT_PORT = 1337;
 var rootPublic = __dirname + '/www';
 var rootTemplates = __dirname + '/templates';
-var ROOT_URL = "/spbscrt/Workspace/assets";
+var ROOT_URL = "/SPBSCRT";
+var GENERATED_PATH = ROOT + "/dyn";
 
 dropbox.establish(FRESH, function (success) {
     if (success) {
@@ -21,9 +22,9 @@ app.use(express.bodyParser());
 app.use(express.cookieParser());
 app.use(express.static(rootPublic));
 
-app.post('/save', function (req, res) {
+app.post('/saveLogic', function (req, res) {
     var screen = req.body.screen;
-    var path = ROOT_URL + '/' + req.body.screenURL;
+    var path = GENERATED_PATH + "/" + screen + "_logic.json";
     var doc = req.body.document;
     var json = JSON.parse(doc);
 
@@ -34,9 +35,9 @@ app.post('/save', function (req, res) {
     });
 
 });
-app.post('/savescreensettings', function (req, res) {
+app.post('/saveParams', function (req, res) {
     var screen = req.body.screen;
-    var path = ROOT_URL + '/' + req.body.screenURL;
+    var path = GENERATED_PATH + "/" + screen + "_params.json";
     var doc = req.body.document;
     var json = JSON.parse(doc);
 
