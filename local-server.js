@@ -7,7 +7,7 @@ var DEFAULT_PORT = 7777;
 var ROOT = "/Users/tmshv/Dropbox/SPBSCRT";
 var GENERATED_PATH = ROOT + "/dyn";
 
-var rootPublic = __dirname + '/www';
+var rootPublic = __dirname + '/../bin';//www';
 
 var app = express.createServer();
 app.use(express.bodyParser());
