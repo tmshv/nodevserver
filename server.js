@@ -51,10 +51,10 @@ app.post('/saveParams', function (req, res) {
 app.get("*", function (req, res) {
     var reqpath = req.params[0];
     var filepath = ROOT + reqpath;
-    console.log('obtaining dropbox file ' + filepath);
+    console.log('obtaining file ' + filepath);
     dropbox.client.metadata(filepath, function (status, reply) {
         if (reply.error) {
-            console.log("cannot obtain metadata for %s", filepath);
+            console.error("cannot obtain metadata for %s", filepath);
             res.send("file not found", 404);
         } else {
             var cache_dict;
@@ -64,7 +64,7 @@ app.get("*", function (req, res) {
             //read 'cache dict' file
             fs.readFile(CACHE_DICT_PATH, function (err, data) {
                 if (err) {
-                    console.log("cache dict file not found");
+                    console.error("cache dict file not found");
                     cache_dict = [];
                 }else{
                     cache_dict = JSON.parse(data.toString());
@@ -80,12 +80,17 @@ app.get("*", function (req, res) {
 
                 //download new file from dropbox
                 if (cached_revision < remote_revision) {
-                    console.log("send dropbox file %s", filepath);
                     dropbox.client.get(filepath, function (status, reply) {
-                        updateCachedFile(cache_dict, filepath, remote_revision, reply);
-
-                        res.contentType(filepath);
-                        res.send(reply);
+                        reply = JSON.parse(reply);
+                        if(reply.error) {
+                            console.error(reply.error);
+                            res.send(reply.error, 404);
+                        }else{
+                            console.log("send dropbox file %s", filepath);
+                            updateCachedFile(cache_dict, filepath, remote_revision, reply);
+                            res.contentType(filepath);
+                            res.send(reply);
+                        }
                     });
                 }
 
