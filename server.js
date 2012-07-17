@@ -51,7 +51,7 @@ app.post('/saveParams', function (req, res) {
 app.get("*", function (req, res) {
     var reqpath = req.params[0];
     var filepath = ROOT + reqpath;
-    console.log('obtaining file ' + filepath);
+    console.log("obtaining file " + filepath);
     dropbox.client.metadata(filepath, function (status, reply) {
         if (reply.error) {
             console.error("cannot obtain metadata for %s", filepath);
@@ -83,7 +83,7 @@ app.get("*", function (req, res) {
                     dropbox.client.get(filepath, function (status, reply) {
                         reply = JSON.parse(reply);
                         if(reply.error) {
-                            console.error(reply.error);
+                            console.error("cannot send %s: %s", filepath, reply.error);
                             res.send(reply.error, 404);
                         }else{
                             console.log("send dropbox file %s", filepath);
