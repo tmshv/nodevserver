@@ -66,11 +66,11 @@ app.get("*", function (req, res) {
                 if (err) {
                     console.error("cache dict file not found");
                     cache_dict = [];
-                }else{
+                } else {
                     cache_dict = JSON.parse(data.toString());
                 }
 
-                for (var i=0; i<cache_dict.length; i++) {
+                for (var i = 0; i < cache_dict.length; i++) {
                     var cache_item = cache_dict[i];
                     if (cache_item.path == filepath) {
                         cached_revision = cache_item.revision;
@@ -81,24 +81,17 @@ app.get("*", function (req, res) {
                 //download new file from dropbox
                 if (cached_revision < remote_revision) {
                     dropbox.client.get(filepath, function (status, reply) {
-                        try{
+                        try {
                             reply = JSON.parse(reply.toString());
-                        }catch(parseError){
-                            console.error("%s file is not json or not valid json", filepath);
-                        }
-                        if(reply.error) {
-                            console.error("cannot send %s: %s", filepath, reply.error);
-                            res.send(reply.error, 404);
-                        }
-                        else{
                             var json_reply = JSON.parse(reply);
-                        }catch(parseError){
+                        } catch (parseError) {
+
                         }
 
-                        if(json_reply && json_reply.error) {
+                        if (json_reply && json_reply.error) {
                             console.error("cannot send %s: %s", filepath, json_reply.error);
                             res.send(reply, 404);
-                        }else{
+                        } else {
                             console.log("send dropbox file %s", filepath);
                             updateCachedFile(cache_dict, filepath, remote_revision, reply);
                             res.contentType(filepath);
@@ -118,11 +111,11 @@ app.get("*", function (req, res) {
             });
         }
     });
-);
+});
 
 function updateCachedFile(dict, filepath, newRevision, fileData) {
     var current_item;
-    for (var i=0; i<dict.length; i++) {
+    for (var i = 0; i < dict.length; i++) {
         var item = dict[i];
         if (item.path == filepath) {
             item.revision = newRevision;
