@@ -81,10 +81,14 @@ app.get("*", function (req, res) {
                 //download new file from dropbox
                 if (cached_revision < remote_revision) {
                     dropbox.client.get(filepath, function (status, reply) {
-                        reply = JSON.parse(reply);
-                        if(reply.error) {
-                            console.error("cannot send %s: %s", filepath, reply.error);
-                            res.send(reply.error, 404);
+                        try{
+                            var json_reply = JSON.parse(reply);
+                        }catch(parseError){
+                        }
+
+                        if(json_reply && json_reply.error) {
+                            console.error("cannot send %s: %s", filepath, json_reply.error);
+                            res.send(reply, 404);
                         }else{
                             console.log("send dropbox file %s", filepath);
                             updateCachedFile(cache_dict, filepath, remote_revision, reply);
