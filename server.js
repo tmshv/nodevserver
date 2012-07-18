@@ -82,7 +82,6 @@ app.get("*", function (req, res) {
                 if (cached_revision < remote_revision) {
                     dropbox.client.get(filepath, function (status, reply) {
                         try {
-                            reply = JSON.parse(reply.toString());
                             var json_reply = JSON.parse(reply);
                         } catch (parseError) {
 
