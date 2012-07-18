@@ -109,7 +109,6 @@ app.get("*", function (req, res) {
             });
         }
     });
-
 });
 
 function updateCachedFile(dict, filepath, newRevision, fileData) {
@@ -141,6 +140,6 @@ function updateCachedFile(dict, filepath, newRevision, fileData) {
 
 function startListening() {
     app.listen(DEFAULT_PORT);
-    var addr = app.address();
+//    var addr = app.address();
     console.log("start!");
 }
