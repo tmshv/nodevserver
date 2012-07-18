@@ -82,6 +82,7 @@ app.get("*", function (req, res) {
                 if (cached_revision < remote_revision) {
                     dropbox.client.get(filepath, function (status, reply) {
                         try{
+<<<<<<< HEAD
                             reply = JSON.parse(reply.toString());
                         }catch(parseError){
                             console.error("%s file is not json or not valid json", filepath);
@@ -91,6 +92,16 @@ app.get("*", function (req, res) {
                             res.send(reply.error, 404);
                         }
                         else{
+=======
+                            var json_reply = JSON.parse(reply);
+                        }catch(parseError){
+                        }
+
+                        if(json_reply && json_reply.error) {
+                            console.error("cannot send %s: %s", filepath, json_reply.error);
+                            res.send(reply, 404);
+                        }else{
+>>>>>>> 658030913f630ba97936ab466a692c0633a1dc43
                             console.log("send dropbox file %s", filepath);
                             updateCachedFile(cache_dict, filepath, remote_revision, reply);
                             res.contentType(filepath);
