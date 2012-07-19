@@ -8,6 +8,7 @@ var ROOT = "/Users/tmshv/Dropbox/SPBSCRT";
 var GENERATED_PATH = ROOT + "/dyn";
 
 var rootPublic = __dirname + '/../bin';//www';
+rootPublic = "/Users/tmshv/Dropbox/Dev/Spbscrts/bin";
 
 var app = express.createServer();
 app.use(express.bodyParser());
@@ -38,21 +39,18 @@ app.post('/saveParams', function (req, res) {
 app.get("*", function (req, res) {
     var reqpath = req.params[0];
     var filepath = ROOT + reqpath;
-    console.log('obtaining file ' + filepath);
     fs.readFile(filepath, function (error, data) {
         if (error) {
-            console.log('file not found');
+            console.error("%s: file not found (404)", reqpath);
             res.send('file not found', 404);
         } else {
-            console.log('sending X bytes'.replace("X", data.length));
+            console.log("%s: sending %d kb", reqpath, Math.round(data.length/1024 * 100) / 100);
             res.contentType(filepath);
             res.send(data);
         }
     });
 });
 
-function startListening() {
-    app.listen(DEFAULT_PORT);
-    console.log("loc server started");
-}
-startListening();
+app.listen(DEFAULT_PORT);
+console.log("local server started");
+console.log("root public (static server): %s", rootPublic);
