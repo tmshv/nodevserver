@@ -35,6 +35,20 @@ app.post('/saveParams', function (req, res) {
         res.send("save params okay");
     });
 });
+app.post('/saveProgress', function (req, res) {
+    var login = req.body.login;
+    var doc = req.body.document;
+    var json = JSON.parse(doc);
+
+    fs.writeFile(ROOT + "/progress/" + login + ".json", JSON.stringify(json, null, 4), function (err) {
+        if(err){
+            console.log(err);
+            res.send("", 400);
+        }
+        console.log("%s progress saved", login);
+        res.send("save progress okay");
+    });
+});
 
 app.get("*", function (req, res) {
     var reqpath = req.params[0];

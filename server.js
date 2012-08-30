@@ -8,6 +8,7 @@ var rootPublic = __dirname + '/www';
 var rootTemplates = __dirname + '/templates';
 var ROOT = "/SPBSCRT";
 var GENERATED_PATH = ROOT + "/dyn";
+var PROGRESS_PATH = ROOT + "/progress";
 
 var CACHE_PATH = process.env.HOME + "/dropbox_cache";
 var CACHE_DICT_PATH = process.env.HOME + "/dropbox_cache_dict.json";
@@ -48,6 +49,18 @@ app.post('/saveParams', function (req, res) {
         res.send("okay");
     });
 });
+app.post('/saveProgress', function (req, res) {
+    var login = req.body.login;
+    var doc = req.body.document;
+    var json = JSON.parse(doc);
+
+    var path = PROGRESS_PATH + "/" + login + ".json";
+    dropbox.client.put(path, JSON.stringify(json, null, 4), function (status, reply) {
+        console.log("%s progress saved", login);
+        res.send("save progress okay");
+    });
+});
+
 app.get("*", function (req, res) {
     var reqpath = req.params[0];
     var filepath = ROOT + reqpath;
